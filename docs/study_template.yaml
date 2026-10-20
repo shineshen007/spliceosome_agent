@@ -1,0 +1,43 @@
+# Replace all REPLACE values. Do not infer scale/pairing from filenames.
+schema_version: '1.0'
+name: REPLACE_STUDY_NAME
+species: REPLACE_SPECIES
+design: paired
+reference: REPLACE_REFERENCE_LABEL
+case: REPLACE_CASE_LABEL
+candidate_id_type: SYMBOL
+candidates: REPLACE_frozen_candidates.csv
+assays:
+  rna:
+    matrix: REPLACE_rna.csv
+    metadata: REPLACE_rna_metadata.csv
+    scale: counts # or log2_expression, only with a known processing history
+    preprocessing: REPLACE_DOCUMENTED_HISTORY
+    id_type: SYMBOL
+    cohort_id: study
+    columns: {sample_id: sample_id, group: group, subject_id: subject_id}
+    mapping: null
+  protein:
+    matrix: REPLACE_protein.csv
+    metadata: REPLACE_protein_metadata.csv
+    scale: log2_abundance
+    preprocessing: REPLACE_DOCUMENTED_HISTORY
+    id_type: SYMBOL
+    cohort_id: study
+    # Existing RDS metadata: {sample_id: ID, group: Type, subject_id: Pair}
+    columns: {sample_id: sample_id, group: group, subject_id: subject_id}
+    mapping: null
+covariates: {} # e.g. batch: categorical, age: continuous
+alpha: 0.05
+confidence: 0.95
+min_effect: 0
+counts_min_total: 10
+min_units: 3
+missing_policy: exclude_feature
+seed: 2024
+rscript: Rscript
+r_library: REPLACE_LOCAL_R_LIBRARY
+font: Arial
+allow_font_fallback: false
+synthetic: false
+

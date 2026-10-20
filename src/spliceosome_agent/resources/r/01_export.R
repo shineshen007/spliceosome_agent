@@ -1,0 +1,7 @@
+args <- commandArgs(trailingOnly=TRUE)
+if (length(args) != 2L) stop("Usage: export.R INPUT.rds OUTPUT.csv")
+x <- readRDS(args[1])
+if (!is.matrix(x) && !is.data.frame(x)) stop("Only matrix/data.frame RDS inputs are supported")
+if (is.null(rownames(x))) stop("RDS needs explicit row names")
+if (anyDuplicated(rownames(x)) || anyDuplicated(colnames(x))) stop("Duplicate RDS row/column IDs")
+utils::write.csv(data.frame(feature_id=rownames(x),x,check.names=FALSE),args[2],row.names=FALSE,na="")

@@ -1,0 +1,44 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "goal": {
+      "default": "",
+      "title": "Goal",
+      "type": "string"
+    },
+    "study": {
+      "additionalProperties": true,
+      "title": "Study",
+      "type": "object"
+    },
+    "status": {
+      "default": "needs_information",
+      "enum": [
+        "needs_information",
+        "blocked",
+        "ready_for_confirmation"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Questions",
+      "type": "array"
+    },
+    "sources": {
+      "additionalProperties": true,
+      "title": "Sources",
+      "type": "object"
+    },
+    "confirmations": {
+      "additionalProperties": true,
+      "title": "Confirmations",
+      "type": "object"
+    }
+  },
+  "title": "StudyDraft",
+  "type": "object"
+}

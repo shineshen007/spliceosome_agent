@@ -1,0 +1,53 @@
+# ---- Local research assets (never published) ----
+data/
+reports/
+scripts/
+config/
+legacy/
+figures/
+result/
+logs/
+tools/
+bin/
+prompts/
+schemas/
+
+# ---- Project state documents (contain unpublished study details) ----
+CHANGELOG.md
+CURRENT_STATE.md
+PROJECT_CONTEXT.md
+
+# ---- Python ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- R ----
+.r-library/
+.Rhistory
+.RData
+.Rproj.user/
+
+# ---- Local agent workspace and secrets ----
+.spliceosome-agent/
+workspace/
+config/runtime.local.yaml
+.env
+.env.*
+models.json
+*.pem
+*.key
+
+# ---- Logs and OS noise ----
+*.log
+.DS_Store
+Thumbs.db

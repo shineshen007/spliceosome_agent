@@ -1,0 +1,18 @@
+include README.md pyproject.toml MANIFEST.in
+include docs/study_template.yaml
+recursive-include src/spliceosome_agent *.py *.md *.json *.tcss *.R
+recursive-include tests_agent *.py *.R
+prune legacy
+prune data
+prune scripts
+prune reports
+prune figures
+prune config
+prune prompts
+prune schemas
+prune tools
+prune tests
+prune .r-library
+prune .venv
+prune .cache
+global-exclude *.pyc .DS_Store

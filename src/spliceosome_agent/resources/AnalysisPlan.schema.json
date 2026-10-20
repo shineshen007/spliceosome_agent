@@ -1,0 +1,492 @@
+{
+  "$defs": {
+    "AssaySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "matrix": {
+          "title": "Matrix",
+          "type": "string"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "string"
+        },
+        "scale": {
+          "enum": [
+            "counts",
+            "log2_expression",
+            "log2_abundance",
+            "abundance"
+          ],
+          "title": "Scale",
+          "type": "string"
+        },
+        "preprocessing": {
+          "minLength": 1,
+          "title": "Preprocessing",
+          "type": "string"
+        },
+        "id_type": {
+          "default": "UNKNOWN",
+          "enum": [
+            "SYMBOL",
+            "ENSEMBL",
+            "ENTREZ",
+            "UNIPROT",
+            "UNKNOWN"
+          ],
+          "title": "Id Type",
+          "type": "string"
+        },
+        "cohort_id": {
+          "default": "study",
+          "title": "Cohort Id",
+          "type": "string"
+        },
+        "columns": {
+          "$ref": "#/$defs/MetadataColumns"
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mapping"
+        },
+        "transform": {
+          "default": "none",
+          "enum": [
+            "none",
+            "log2"
+          ],
+          "title": "Transform",
+          "type": "string"
+        }
+      },
+      "required": [
+        "matrix",
+        "metadata",
+        "scale",
+        "preprocessing"
+      ],
+      "title": "AssaySpec",
+      "type": "object"
+    },
+    "MetadataColumns": {
+      "additionalProperties": false,
+      "properties": {
+        "sample_id": {
+          "default": "sample_id",
+          "title": "Sample Id",
+          "type": "string"
+        },
+        "group": {
+          "default": "group",
+          "title": "Group",
+          "type": "string"
+        },
+        "subject_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "subject_id",
+          "title": "Subject Id"
+        }
+      },
+      "title": "MetadataColumns",
+      "type": "object"
+    },
+    "ProbeReport": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "needs_information",
+            "blocked",
+            "ready_for_confirmation"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "input_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Input Hashes",
+          "type": "object"
+        },
+        "summary": {
+          "additionalProperties": true,
+          "title": "Summary",
+          "type": "object"
+        },
+        "environment": {
+          "additionalProperties": true,
+          "title": "Environment",
+          "type": "object"
+        },
+        "errors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "ProbeReport",
+      "type": "object"
+    },
+    "StudySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.0",
+          "enum": [
+            "1.0",
+            "2.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "analysis_mode": {
+          "default": "candidate_screening",
+          "enum": [
+            "candidate_screening",
+            "differential"
+          ],
+          "title": "Analysis Mode",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "species": {
+          "default": "unknown",
+          "minLength": 1,
+          "title": "Species",
+          "type": "string"
+        },
+        "design": {
+          "enum": [
+            "paired",
+            "unpaired"
+          ],
+          "title": "Design",
+          "type": "string"
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        },
+        "case": {
+          "title": "Case",
+          "type": "string"
+        },
+        "assays": {
+          "additionalProperties": {
+            "$ref": "#/$defs/AssaySpec"
+          },
+          "propertyNames": {
+            "enum": [
+              "rna",
+              "protein"
+            ]
+          },
+          "title": "Assays",
+          "type": "object"
+        },
+        "candidates": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidates"
+        },
+        "candidate_id_type": {
+          "default": "SYMBOL",
+          "enum": [
+            "SYMBOL",
+            "ENSEMBL",
+            "ENTREZ",
+            "UNIPROT"
+          ],
+          "title": "Candidate Id Type",
+          "type": "string"
+        },
+        "covariates": {
+          "additionalProperties": {
+            "enum": [
+              "continuous",
+              "categorical"
+            ],
+            "type": "string"
+          },
+          "title": "Covariates",
+          "type": "object"
+        },
+        "alpha": {
+          "default": 0.05,
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Alpha",
+          "type": "number"
+        },
+        "confidence": {
+          "default": 0.95,
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "min_effect": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Min Effect",
+          "type": "number"
+        },
+        "counts_min_total": {
+          "default": 10,
+          "minimum": 0,
+          "title": "Counts Min Total",
+          "type": "integer"
+        },
+        "min_units": {
+          "default": 3,
+          "minimum": 3,
+          "title": "Min Units",
+          "type": "integer"
+        },
+        "missing_policy": {
+          "default": "exclude_feature",
+          "enum": [
+            "exclude_feature",
+            "error"
+          ],
+          "title": "Missing Policy",
+          "type": "string"
+        },
+        "seed": {
+          "default": 2024,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "rscript": {
+          "default": "Rscript",
+          "title": "Rscript",
+          "type": "string"
+        },
+        "r_library": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "R Library"
+        },
+        "font": {
+          "default": "Arial",
+          "title": "Font",
+          "type": "string"
+        },
+        "allow_font_fallback": {
+          "default": false,
+          "title": "Allow Font Fallback",
+          "type": "boolean"
+        },
+        "synthetic": {
+          "default": false,
+          "title": "Synthetic",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "design",
+        "reference",
+        "case",
+        "assays"
+      ],
+      "title": "StudySpec",
+      "type": "object"
+    },
+    "TaskSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "QC",
+            "Knowledge",
+            "RNA",
+            "Protein",
+            "Integration",
+            "Critic"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "tool": {
+          "enum": [
+            "qc",
+            "knowledge",
+            "differential",
+            "integration",
+            "critic"
+          ],
+          "title": "Tool",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "tool"
+      ],
+      "title": "TaskSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "version": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "parent_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Hash"
+    },
+    "goal": {
+      "title": "Goal",
+      "type": "string"
+    },
+    "study": {
+      "$ref": "#/$defs/StudySpec"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/TaskSpec"
+      },
+      "title": "Tasks",
+      "type": "array"
+    },
+    "max_repairs": {
+      "default": 3,
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Max Repairs",
+      "type": "integer"
+    },
+    "max_role_calls": {
+      "default": 30,
+      "maximum": 300,
+      "minimum": 1,
+      "title": "Max Role Calls",
+      "type": "integer"
+    },
+    "token_budget": {
+      "default": 100000,
+      "minimum": 100,
+      "title": "Token Budget",
+      "type": "integer"
+    },
+    "generated_code": {
+      "default": true,
+      "title": "Generated Code",
+      "type": "boolean"
+    },
+    "privacy": {
+      "const": "deidentified_summary",
+      "default": "deidentified_summary",
+      "title": "Privacy",
+      "type": "string"
+    },
+    "input_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Input Hashes",
+      "type": "object"
+    },
+    "preflight": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProbeReport"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "goal",
+    "study",
+    "tasks",
+    "input_hashes"
+  ],
+  "title": "AnalysisPlan",
+  "type": "object"
+}

@@ -1,0 +1,34 @@
+Screen { background: #101827; color: #eef2ff; }
+
+/* One scrolling body; only the current primary action and input stay pinned. */
+#welcome-scroll { height: 1fr; padding: 1 2; overflow: auto auto; }
+#welcome-banner { width: 65; height: 15; text-wrap: nowrap; }
+#workspace-scroll { height: 1fr; padding: 1 2; }
+#current-content { height: auto; width: 100%; }
+#dataset-controls, #scale-controls { height: auto; margin-top: 1; }
+#dataset-controls Label, #scale-controls Label { height: auto; }
+#dataset-controls Select, #scale-controls Select { width: 100%; height: 3; }
+#activity { height: 1; padding: 0 2; color: #b8c7df; }
+#primary-actions { height: 3; padding: 0 1; }
+#primary-actions Button { width: auto; min-width: 14; }
+#chat-input { width: 1fr; margin: 0 1; }
+
+/* Settings and editor remain separate, keyboard-accessible forms. */
+ModelScreen, StudyEditorScreen { align: center middle; background: #000000 65%; }
+#model-dialog { width: 90%; height: 90%; padding: 1; border: round #625d9e; background: #172338; }
+#model-title { text-style: bold; height: 1; margin-bottom: 1; }
+#model-form { height: 1fr; }
+#model-form .field-label { color: #b5c2d8; height: auto; margin-top: 1; }
+#model-form Input, #model-form Select { width: 100%; margin-bottom: 0; }
+#model-hint { color: #9fc5f8; height: auto; margin-top: 1; }
+#model-error { color: #ff9b91; height: auto; }
+#model-buttons { height: 3; align-horizontal: right; }
+#model-buttons Button { margin-left: 1; min-width: 10; }
+
+#editor-dialog { width: 90%; height: 90%; padding: 1; border: round #625d9e; background: #172338; }
+#editor-title { text-style: bold; height: auto; margin-bottom: 1; }
+#editor-scroll { height: 1fr; }
+#study-editor { height: 100%; border: round #49648b; }
+#editor-error { color: #ff9b91; height: auto; }
+#editor-buttons { height: 3; align-horizontal: right; }
+#editor-buttons Button { margin-left: 1; min-width: 10; }

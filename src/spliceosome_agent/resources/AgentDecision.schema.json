@@ -1,0 +1,77 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "default": "continue",
+      "enum": [
+        "continue",
+        "retry",
+        "revise",
+        "code"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "explanation": {
+      "default": "",
+      "title": "Explanation",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "target": {
+      "anyOf": [
+        {
+          "enum": [
+            "QC",
+            "Knowledge",
+            "RNA",
+            "Protein",
+            "Integration"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "enum": [
+            "python",
+            "r"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Language"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source"
+    }
+  },
+  "title": "AgentDecision",
+  "type": "object"
+}

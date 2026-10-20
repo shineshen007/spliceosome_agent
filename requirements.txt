@@ -1,0 +1,2 @@
+# Development install; public package dependencies are in pyproject.toml.
+-e .

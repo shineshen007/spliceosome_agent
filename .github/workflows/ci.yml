@@ -1,0 +1,42 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package and test extras
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[test]'
+
+      - name: Verify the console entry point
+        run: |
+          spliceosome-agent --version
+          spliceosome-agent --help
+
+      - name: Run tests
+        # No R toolchain in CI, so the numerical suites skip themselves instead of failing.
+        # Install R 4.5.x + Bioconductor 3.22 locally to exercise them.
+        run: pytest -q
+
+      - name: Build distributions
+        run: python -m build

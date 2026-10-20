@@ -1,0 +1,47 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "plan_hash": {
+      "title": "Plan Hash",
+      "type": "string"
+    },
+    "plan_version": {
+      "title": "Plan Version",
+      "type": "integer"
+    },
+    "approved_at": {
+      "title": "Approved At",
+      "type": "string"
+    },
+    "approved_by": {
+      "default": "user",
+      "title": "Approved By",
+      "type": "string"
+    },
+    "execution_scope": {
+      "default": "registered_tools_with_code_review",
+      "enum": [
+        "registered_tools_with_code_review",
+        "registered_tools_with_automatic_code"
+      ],
+      "title": "Execution Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "plan_hash",
+    "plan_version",
+    "approved_at"
+  ],
+  "title": "ApprovalRecord",
+  "type": "object"
+}
