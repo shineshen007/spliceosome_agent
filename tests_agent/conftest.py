@@ -16,6 +16,10 @@ os.environ.setdefault("MPLCONFIGDIR", str(ROOT / ".cache/matplotlib-tests"))
 os.environ.setdefault("XDG_CACHE_HOME", str(ROOT / ".cache"))
 
 
+RSCRIPT = shutil.which("Rscript")
+RSCRIPT_READY = RSCRIPT is not None
+
+
 def _r_environment_ready():
     """True only when Rscript plus the locked numerical packages are importable.
 
@@ -23,15 +27,14 @@ def _r_environment_ready():
     the locked library they are skipped rather than allowed to fail as if the
     Python package were broken.
     """
-    rscript = shutil.which("Rscript")
-    if not rscript:
+    if not RSCRIPT_READY:
         return False
     env = dict(os.environ)
     if R_LIBRARY.is_dir():
         env["R_LIBS_USER"] = str(R_LIBRARY)
     try:
         response = subprocess.run(
-            [rscript, "--vanilla", "-e",
+            [RSCRIPT, "--vanilla", "-e",
              'cat(all(sapply(c("jsonlite","limma","DESeq2"),requireNamespace,quietly=TRUE)))'],
             env=env, capture_output=True, text=True, timeout=120)
     except (OSError, subprocess.TimeoutExpired):
@@ -40,6 +43,16 @@ def _r_environment_ready():
 
 
 R_READY = _r_environment_ready()
+
+# Tests that need only the Rscript binary: they use base R to build or read RDS fixtures.
+NEEDS_RSCRIPT = {
+    ("test_low_input.py", "test_first_model_request_already_has_rds_probes_without_private_ids"),
+    ("test_low_input.py", "test_multiple_inputs_offer_dataset_choice"),
+    ("test_low_input.py", "test_nonpositive_abundance_never_gets_an_implicit_pseudocount"),
+    ("test_low_input.py", "test_pair_conflicts_and_unobserved_thrombus_are_not_guessed"),
+    ("test_low_input.py", "test_rds_is_inspected_before_full_study_and_only_scale_is_asked"),
+    ("test_knowledge_and_rds.py", "test_rds_id_type_pair_adapter_without_row_order"),
+}
 
 # Tests that run real R design validation or model fitting (see README "R统计环境").
 NEEDS_R = {
@@ -85,16 +98,22 @@ NEEDS_R = {
 def pytest_configure(config):
     config.addinivalue_line(
         "markers", "requires_r: needs the locked R library (jsonlite, limma, DESeq2)")
+    config.addinivalue_line(
+        "markers", "requires_rscript: needs only the Rscript binary (base R fixtures)")
 
 
 def pytest_collection_modifyitems(config, items):
-    if R_READY:
-        return
-    skip = pytest.mark.skip(
+    full_r_skip = pytest.mark.skip(
         reason="requires the locked R environment; run 'spliceosome-agent deps --install-r --library ./r-library'")
+    rscript_skip = pytest.mark.skip(
+        reason="requires Rscript (install R; base R is enough for these fixture tests)")
     for item in items:
-        if (Path(str(item.fspath)).name, item.originalname) in NEEDS_R:
-            item.add_marker(skip)
+        module = Path(str(item.fspath)).name
+        name = item.originalname
+        if not R_READY and (module, name) in NEEDS_R:
+            item.add_marker(full_r_skip)
+        elif not RSCRIPT_READY and (module, name) in NEEDS_RSCRIPT:
+            item.add_marker(rscript_skip)
 
 
 @pytest.fixture

@@ -54,4 +54,5 @@ testpaths = ["tests_agent"]
 asyncio_mode = "auto"
 markers = [
   "requires_r: needs the locked R library (jsonlite, limma, DESeq2); skipped automatically when absent",
+  "requires_rscript: needs only the Rscript binary for base-R fixtures; skipped automatically when absent",
 ]

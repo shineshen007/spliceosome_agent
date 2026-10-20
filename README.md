@@ -160,6 +160,11 @@ python -m build
 
 数值测试真实调用DESeq2/limma并对照独立R拟合；模型协议和循环测试使用标注的模拟响应，不代替真实模型联调。
 
-测试分两类：协议、契约、布局与命令测试无需R，在任何环境都可运行；依赖锁定R库的数值与预检测试在缺少 `jsonlite`/`limma`/`DESeq2` 时自动跳过并注明原因，不会误报为代码失败。安装R环境后可用 `SPLICEOSOME_R_LIBRARY=/path/to/r-library pytest -q` 启用全部测试。
+测试分两类：协议、契约、布局与命令测试无需R，在任何环境都可运行；依赖R的测试按所需条件自动跳过并注明原因，不会误报为代码失败：
+
+- 只用 base R 生成或读取 RDS fixture 的测试，缺少 `Rscript` 时跳过。
+- 执行真实设计校验、DESeq2/limma 拟合的测试，缺少锁定R库时跳过。
+
+安装R环境后可用 `SPLICEOSOME_R_LIBRARY=/path/to/r-library pytest -q` 启用全部测试。
 
 官方参考：[OpenAI结构化输出](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat)、[Ollama兼容接口](https://docs.ollama.com/api/openai-compatibility)、[Textual交互测试](https://textual.textualize.io/guide/testing/)。
